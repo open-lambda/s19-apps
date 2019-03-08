@@ -7,9 +7,9 @@
 - [ ] @dereklh4 :
   - [ ] Show audio transcription in server
 - [ ] @GindaChen : 
-  - [ ] Show speaker diarization example.
+  - [x] Show speaker diarization example.
   - [ ] Show speaker diarization example in package style.
-  - [ ] Show segmentation of record.
+  - [x] Show segmentation of record.
 - [ ] @aditya2397 :  
   - [ ] Record audio in web browser
 - [ ] @joelhaynie :  
