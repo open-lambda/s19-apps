@@ -35,3 +35,5 @@
 * [MediaRecorder Polyfill for iOS support](https://blog.addpipe.com/recording-audio-in-the-browser-using-pure-html5-and-minimal-javascript/)
 ### Miscellaneous
 * [Spectrum Analyzer](https://academo.org/demos/spectrum-analyzer/)
+### Tools
+* [Audacity](https://www.audacityteam.org/)
