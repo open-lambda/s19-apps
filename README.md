@@ -19,6 +19,9 @@
 
 ### Next Step
 
+@all
+- [ ] Integrate all things to run on Openlambda.
+
 @GindaChen
 - [ ] Lambpy (OpenNumpy, OpenLambda-OpenNumpy)
 - [ ] O'relay Book -> Lambpy -> $100/book
