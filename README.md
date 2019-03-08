@@ -12,4 +12,7 @@
   - [x] Show segmentation of record.
 - [ ] @aditya2397 :  
   - [ ] Record audio in web browser
-- [ ] @joelhaynie :  
+- [ ] @joelhaynie : 
+  - [x] Get Docker running on Pi, and Pine64
+  - [ ] Get Open Lambda Running on Pi, and Pine64
+  - [ ] Install and play with edge platforms
