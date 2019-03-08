@@ -16,3 +16,9 @@
   - [x] Get Docker running on Pi, and Pine64
   - [ ] Get Open Lambda Running on Pi, and Pine64
   - [ ] Install and play with edge platforms
+
+### Next Step
+
+@GindaChen
+- [ ] Lambpy, OpenNumpy, OpenLambda-OpenNumpy
+- [ ] O'relay Book -> Lambpy -> $100/book
