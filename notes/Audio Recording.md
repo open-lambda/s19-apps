@@ -16,6 +16,7 @@
 * Output format - PCM (uncompressed)
 
 ## Next Steps
+* Try 16k sample rate and 16 bit resolution for audio output
 * Wrap PCM data in WAV container
 * Send WAV to cloud for transcription
 * Chunk audio at meaningful breakpoints
