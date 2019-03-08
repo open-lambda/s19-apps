@@ -20,5 +20,5 @@
 ### Next Step
 
 @GindaChen
-- [ ] Lambpy, OpenNumpy, OpenLambda-OpenNumpy
+- [ ] Lambpy (OpenNumpy, OpenLambda-OpenNumpy)
 - [ ] O'relay Book -> Lambpy -> $100/book
