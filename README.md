@@ -24,4 +24,7 @@
 
 @GindaChen
 - [ ] Lambpy (OpenNumpy, OpenLambda-OpenNumpy)
+  - [ ] LDA Math Formular demonstration
+  - [ ] LDA Algorithm
+  - [ ] Decompose it into Lambpy primitives
 - [ ] O'relay Book -> Lambpy -> $100/book
