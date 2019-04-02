@@ -34,8 +34,20 @@ class LamObject():
             # The node is a constant node
             self.status = LamStatus.CONST
             self.val = np.array(val)
-        
-    def run(self):
+
+        elif isinstance(val, (str,)):
+            # The node is a Data source node.
+            # The data will have to be fetched later.
+            self.status = LamStatus.DATA_SRC
+            self.val = None
+            self.data_src = val
+
+        else:
+            # The node is a Data destination node
+            # The data will depend on other data_src / const nodes
+            self.status = LamStatus.DATA_DES
+            self.val = None
+            self.data_src = None
         if not len(self.children):
             return self.val
         for i in self.children:
