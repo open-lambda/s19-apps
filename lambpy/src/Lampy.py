@@ -48,17 +48,45 @@ class LamObject():
             self.status = LamStatus.DATA_DES
             self.val = None
             self.data_src = None
+
+    def fetch(self):
+        # Dev Phase:
+        #  3. Fetch only a portion of the file -> a meta node tell the server to pre-process the data and pre-fetch
+        url = self.val
+        # TODO: Issue a lambda call to get the data ready
+        repo = np.DataSource()
+        if repo.exists(self.data_src):
+            # TODO: Fetch a portion of the file
+            with repo.open(self.data_src, 'rb') as f:
+                self.val = np.load(f)
+            return
+        raise Exception(f'Data source not availble: {self.data_src}')
+
+    def run_base(self):
+        if self.status == LamStatus.DATA_DES:
+            return
         if not len(self.children):
-            return self.val
+            if self.status == LamStatus.DATA_SRC:
+                self.fetch()  # Fetch data here!
+            return
+
+    def run(self):
+        # Leaf Node:
+        #  1. Const Node:
+        #  2. Data source node:
+        self.run_base()
+        if self.status is not LamStatus.DATA_DES:
+            return
+
+        # Internal Nodes: should all be DATA_DES
         for i in self.children:
             i.run()
-        sum = self.children[0].val
-        for i in self.children[1:]:
-            sum += i.val
-        self.val = sum
-        return sum
-        
-        
+
+        # Actual addition
+        self.val = reduce(lambda x, y: x.val + y.val, self.children)
+
+        return self.val
+
     def __add__(self, obj):
         return LamObject(val=None, children=[self, obj])
     
