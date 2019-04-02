@@ -13,11 +13,26 @@ class LamStatus(Enum):
 
 
 class LamObject():
-    def __init__(self, val=None, children=[]):
-        self.children = children   # [LamObject]
-        if isinstance(val, numpy.ndarray):
+
+    def __init__(self, val=None, children=None):
+
+        self.children = children or []
+        self.data_src = None
+        self.status = None
+        self.val = None  # Declaration here
+
+        self.init_val(val)
+
+    def init_val(self, val):
+        """Determine what is the status of the node"""
+        if isinstance(val, np.ndarray):
+            # The node is a constant node
+            self.status = LamStatus.CONST
             self.val = val
-        else:
+
+        elif isinstance(val, (list,)):
+            # The node is a constant node
+            self.status = LamStatus.CONST
             self.val = np.array(val)
         
     def run(self):
