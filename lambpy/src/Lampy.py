@@ -1,3 +1,17 @@
+from enum import Enum
+from functools import reduce
+
+import numpy as np
+
+
+class LamStatus(Enum):
+    CONST = 0  # A Defined Constant
+    DATA_SRC = 1  # A defined data source node
+    DATA_DES = 2  # A to-be-calculated node
+    DATA_SRC_FETCHED = 3  # A data source node who fetched the matrix and loaded the data
+    DATA_DES_COMPUTED = 4  # A data dest node who computed the result
+
+
 class LamObject():
     def __init__(self, val=None, children=[]):
         self.children = children   # [LamObject]
