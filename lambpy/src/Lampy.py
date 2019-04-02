@@ -89,15 +89,9 @@ class LamObject():
 
     def __add__(self, obj):
         return LamObject(val=None, children=[self, obj])
-    
+
     def __str__(self):
         return self.val.__str__()
 
-#     def __repr__(self):
-#         return self.val.__str__()
-
-a = LamObject([1,2,3])
-b = LamObject([1,2,3])
-d = LamObject([4])
-
-c = a + b + d
+    # def __repr__(self):
+    #     return self.val.__str__()
