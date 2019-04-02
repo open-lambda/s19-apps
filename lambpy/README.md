@@ -26,20 +26,64 @@ Numpy for Open-Lambda.
 
 
 
-
-## Benchmark Application
-
+## Components
 
 
 
-
-## Thinkings and TODOs
-
-- [ ] Design a very simple Framework
-  - [ ] Primitives for computation
-    - [ ] Mimic Tensorflow: `Graph`, 	
-    - [ ] Mimic 
+- [ ] Operation & Computation
+  - [x] Create simple DAG 
+  - [ ] Load/Dump Data Dependency Graph (visualization and scheduling)
+  - [ ] Estimate Computation Time (based on matrix size and operations)
+  - [ ] Extend the DAG idea to a directed graph (for loops etc.) 
+- [ ] Scheduling
   - [ ] 
+- [ ] Data I/O
+  - [x] Fetch Data from remote device
+  - [ ] Create a `lampy-server` class for remote access
+    - [ ] Request like a URL
+
+
+
+### Operation & Computation
+
+#### Create simple DAG 
+
+
+
+#### Load/Dump Data Dependency Graph
+
+
+
+####  (Pseudo) Estimate Computation Time
+
+
+
+
+
+
+
+### Data I/O
+
+#### Fetch Data from remote device
+
+This step is to 
+
+```python
+import lampy as np
+# Load Data from local/remote file
+matrix_a = ""
+matrix_b = ""
+a = np.array()
+b = np.array()
+c = a + b
+c.run()
+```
+
+
+
+##### `v0.0.2`: load remote matrix file
+
+##### `v0.0.3`: Dispatch a lambda call to issue the request of data
 
 
 
