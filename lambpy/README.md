@@ -1,26 +1,28 @@
 # Lampy
 
+Numpy for Open-Lambda.
+
 [TOC]
 
-## Development Log
+## What people care
+
+- **Parallelism.** Open-Lambda should not solve problem that is not parallelizable.
 
 
 
 
 
-## Operations
+## Dev Aspects
 
-- [ ] Vector Operation: 
-  - [ ] Add (Substraction)
-  - [ ] Multiplication: Dot product, Outer product
-- [ ] Saxpy Operation
-- [ ] Reduction
-- [ ] Prefix-sum
-- [ ] Reordering/Sorting
-- [ ] Zip
-- [ ] Fusing
-- [ ] FFT
+### Semester Goal: Fisher Semi-Linear Discriminant
 
+- Scheduling: 
+  - Generate computation dependency graph
+  - Parallelism 
+- Data I/O: 
+- Operation: 
+  - Support common math operations
+  - Test on Fisher Semi-Linear Discriminant Methods
 
 
 
