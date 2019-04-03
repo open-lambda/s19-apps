@@ -54,6 +54,7 @@ class LamObject():
         #  3. Fetch only a portion of the file -> a meta node tell the server to pre-process the data and pre-fetch
         url = self.val
         # TODO: Issue a lambda call to get the data ready
+        # TODO: Change the numpy datasource so it supports HTTPS
         repo = np.DataSource()
         if repo.exists(self.data_src):
             # TODO: Fetch a portion of the file
