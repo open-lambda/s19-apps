@@ -1,3 +1,4 @@
+import json
 import shutil
 from enum import Enum
 from functools import reduce
@@ -54,16 +55,21 @@ class LamObject():
     def fetch(self):
         # Dev Phase:
         #  3. Fetch only a portion of the file -> a meta node tell the server to pre-process the data and pre-fetch
-        url = self.val
+        url = self.data_src
         # TODO: Issue a lambda call to get the data ready
-        # TODO: Change the numpy datasource so it supports HTTPS
-
-        repo = np.DataSource()
-        if repo.exists(self.data_src):
-            # TODO: Fetch a portion of the file
-            with repo.open(self.data_src, 'rb') as f:
-                self.val = np.load(f)
+        req = requests.get(url) # Blocking call for a resource
+        data = req.content
+        try:
+            self.val = np.load(data)
             return
+        except:
+            print(f"[Debug] {url} not numpy object file. Try json parsing")
+
+        try:
+            self.val = np.array(json.loads(data))
+            return
+        except:
+            print(f"[Debug] {url} not json object file either.")
         raise Exception(f'Data source not availble: {self.data_src}')
 
     def run_base(self):
@@ -96,6 +102,3 @@ class LamObject():
 
     def __str__(self):
         return self.val.__str__()
-
-    # def __repr__(self):
-    #     return self.val.__str__()

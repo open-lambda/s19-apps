@@ -48,6 +48,7 @@ def test_basic_fetch():
 def test_remote_fetch():
     # TODO: will fail because not support https
     remote_path = "https://github.com/open-lambda/s19-apps/blob/master/lampy/dump/a.np?raw=true"
+    # remote_path = "https://raw.githubusercontent.com/open-lambda/s19-apps/master/lampy/dump/a.json"
     matrix_path = os.path.join(remote_path)
 
     a = LamObject(matrix_path)
@@ -62,6 +63,6 @@ def test_remote_fetch():
 
 
 if __name__ == '__main__':
-    test_basic_addition()
-    test_basic_fetch()
-    # test_remote_fetch()
+    # test_basic_addition()
+    # test_basic_fetch()
+    test_remote_fetch()

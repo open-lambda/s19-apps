@@ -4,3 +4,7 @@ lampy/.idea/
 .idea/
 lampy/references/nsdi12-final138.pdf
 mlmi_2006_pardo.pdf
+lampy/src/.pytest_cache/v/cache/lastfailed
+lampy/src/.pytest_cache/v/cache/nodeids
+lampy/src/__pycache__/lampy.cpython-37.pyc
+lampy/src/.pytest_cache/README.md
