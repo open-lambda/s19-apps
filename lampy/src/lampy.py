@@ -1,7 +1,9 @@
+import shutil
 from enum import Enum
 from functools import reduce
 
 import numpy as np
+import requests
 
 
 class LamStatus(Enum):
@@ -55,6 +57,7 @@ class LamObject():
         url = self.val
         # TODO: Issue a lambda call to get the data ready
         # TODO: Change the numpy datasource so it supports HTTPS
+
         repo = np.DataSource()
         if repo.exists(self.data_src):
             # TODO: Fetch a portion of the file
