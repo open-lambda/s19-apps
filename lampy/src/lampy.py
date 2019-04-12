@@ -213,20 +213,17 @@ class LampyObject:
             self._status = LampyStatus.Output_Done
             return
 
-    def run(self):
-        # Leaf Node:
-        #  1. Const Node:
-        #  2. Data source node:
-        self.run_base()
-        if self.status is not LamStatus.DATA_DES:
-            return
 
-        # Internal Nodes: should all be DATA_DES
-        for i in self.children:
-            i.run()
+    def __add__(self, other):
+        op = LampyOperator.add_operator.value
+        return LampyObject(children=[self, other], op=op)
 
-        # Actual addition
-        self.val = reduce(lambda x, y: x.val + y.val, self.children)
+    def __mul__(self, other):
+        op = LampyOperator.mul_operator.value
+        return LampyObject(children=[self, other], op=op)
+
+    def __str__(self):
+        return f"LampyObject({self.value}, status={self.status.name})"
 
         return self.val
 
