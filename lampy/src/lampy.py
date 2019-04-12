@@ -182,6 +182,20 @@ class LampyObject:
         shapes = [ ch.shape for ch in self.children ]
         self._shape = self._op.shape(*shapes)
         return self._shape
+
+    # Retrieve the full data
+    @property
+    def value(self):
+        if not self.is_done():
+            if self.is_type(INPUT_NODE):
+                # TODO: Input all things from data_src
+                pass
+            elif self.is_type(OUTPUT_NODE):
+                # Recursively calculate children's value
+                ch_vals = [ch.value for ch in self.children]
+                self.operate(*ch_vals)
+            self._mark_done()
+        return self._val
             return
         if not len(self.children):
             if self.status == LamStatus.DATA_SRC:
