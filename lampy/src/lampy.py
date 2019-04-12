@@ -45,6 +45,18 @@ def _array(val=None, children=None, op=None):
     if isinstance(val, (str)):
         return (None, val, LampyStatus.Input_Empty)
 
+
+class _LampyOperator:
+    def __init__(self, op, shape_op):
+        self._op = op
+        self._shape_op = shape_op
+
+    def __call__(self, *args):
+        return self._op(*args)
+
+    def shape(self, *args):
+        return self._shape_op(*args)
+
         try:
             self.val = np.array(json.loads(data))
             return
