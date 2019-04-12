@@ -156,7 +156,7 @@ class LampyObject:
     def children(self):
         return self._chs
 
-    def is_type(self, *args):
+    def _is_type(self, *args):
         for nodeset in args:
             if not isinstance(nodeset, list):
                 nodeset = [nodeset]
@@ -164,7 +164,8 @@ class LampyObject:
                 return True
         return False
 
-    def operate(self, *args):
+    # Invoke operator
+    def _operate(self, *args):
         try:
             result = self._op(*args)
             self._val = result
@@ -183,37 +184,36 @@ class LampyObject:
         self._shape = self._op.shape(*shapes)
         return self._shape
 
-    # Retrieve the full data
+    # Retrieve Value
     @property
     def value(self):
         if not self.is_done():
-            if self.is_type(INPUT_NODE):
+            if self._is_type(INPUT_NODE):
                 # TODO: Input all things from data_src
                 pass
-            elif self.is_type(OUTPUT_NODE):
+            elif self._is_type(OUTPUT_NODE):
                 # Recursively calculate children's value
                 ch_vals = [ch.value for ch in self.children]
-                self.operate(*ch_vals)
+                self._operate(*ch_vals)
             self._mark_done()
         return self._val
 
-    # See _val in any case
     def async_value(self):
         return self._val
 
-    # Return current outcome
+    # Automaton status change
     def is_done(self):
-        return self.is_type(DONE_NODE)
+        return self._is_type(DONE_NODE)
 
     def _mark_done(self):
-        if self.is_type(INPUT_NODE):
+        if self._is_type(INPUT_NODE):
             self._status = LampyStatus.Input_Done
             return
-        if self.is_type(OUTPUT_NODE):
+        if self._is_type(OUTPUT_NODE):
             self._status = LampyStatus.Output_Done
             return
 
-
+    # Python Native Operator Capturer
     def __add__(self, other):
         op = LampyOperator.add_operator.value
         return LampyObject(children=[self, other], op=op)
@@ -222,5 +222,6 @@ class LampyObject:
         op = LampyOperator.mul_operator.value
         return LampyObject(children=[self, other], op=op)
 
+    # Representation
     def __str__(self):
         return f"LampyObject(status={self.status.name}, value={repr(self.value)})"
