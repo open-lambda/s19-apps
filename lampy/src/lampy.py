@@ -163,15 +163,25 @@ class LampyObject:
             if self.status in nodeset:
                 return True
         return False
-        try:
-            self.val = np.array(json.loads(data))
-            return
-        except:
-            print(f"[Debug] {url} not json object file either.")
-        raise Exception(f'Data source not availble: {self.data_src}')
 
-    def run_base(self):
-        if self.status == LamStatus.DATA_DES:
+    def operate(self, *args):
+        try:
+            result = self._op(*args)
+            self._val = result
+            return result
+        except:
+            assert( False, "Operation failed")
+
+    @property
+    def shape(self):
+        if self.is_done():
+            return self._val.shape
+        if self._shape:
+            return self._shape
+        # Children Shape retrieve
+        shapes = [ ch.shape for ch in self.children ]
+        self._shape = self._op.shape(*shapes)
+        return self._shape
             return
         if not len(self.children):
             if self.status == LamStatus.DATA_SRC:
