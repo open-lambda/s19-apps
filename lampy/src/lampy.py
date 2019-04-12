@@ -33,6 +33,14 @@ OUTPUT_NODE = [LampyStatus.Output_Undefined,LampyStatus.Output_Empty,LampyStatus
                LampyStatus.Output_Running,LampyStatus.Output_Done]
 DONE_NODE = [LampyStatus.Output_Done, LampyStatus.Input_Done, LampyStatus.Const]
 
+
+def array(val):
+    # If val is a LampyObject, we return the object -- not renew it -- observe the numpy practice.
+    if isinstance(val, LampyObject):
+        return val
+    return LampyObject(val)
+
+
 def _array(val=None, children=None, op=None):
     """Internal method to create a new array.
     Return val: a triple : (val, data_src, status)
@@ -43,7 +51,7 @@ def _array(val=None, children=None, op=None):
     if val is None:
         return (np.array([]), None, LampyStatus.Empty)
     # Const Node
-    if isinstance(val, (list, np.ndarray)):
+    if isinstance(val, (list, np.ndarray, int, bool, complex, float)):
         return (np.array(val), None, LampyStatus.Const)
     # Data input node
     if isinstance(val, (str)):
@@ -178,16 +186,21 @@ class LampyObject:
         except:
             assert( False, "Operation failed")
 
+    def _get_url_data_content(self, url):
+        pass
+
     def _resolve_content_from_data_src(self, data):
         val = None
-        try:
-            val = np.load(data)
-            return val
-        except:
-            print(f"[Debug] Not numpy file.")
+
+        # TODO: Make the numpy load function here - to decode the string instead of loading a file.
+        # try:
+        #     val = np.load(data)
+        #     return val
+        # except:
+        #     print(f"[Debug] Not numpy file.")
 
         try:
-            self.val = np.array(json.loads(data))
+            val = np.array(json.loads(data))
             return val
         except:
             print(f"[Debug] Not json file.")
@@ -198,6 +211,7 @@ class LampyObject:
         if not self._is_type([LampyStatus.Input_Empty]):
             return
         # self._status = LampyStatus.Input_Loading
+        # TODO: Support both local and remote access
         req = requests.get(self._data_src)
         data = self._resolve_content_from_data_src(req.content)
         self._val = data
@@ -223,7 +237,6 @@ class LampyObject:
                 # TODO: Dispatch remote task for computation
                 # TODO: Input all things from data_src
                 self._read_data_src()
-                pass
             elif self._is_type(OUTPUT_NODE):
                 # Recursively calculate children's value
                 ch_vals = [ch.value for ch in self.children]
@@ -249,15 +262,28 @@ class LampyObject:
             self._status = LampyStatus.Output_Done
             return
 
+    def __radd__(self, other):
+        return self.__add__(other)
+
     # Python Native Operator Capture Function
     def __add__(self, other):
+        if not isinstance(other, LampyObject):
+            other = array(other)
         op = LampyOperator.add_operator.value
         return LampyObject(children=[self, other], op=op)
 
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
     def __mul__(self, other):
+        if not isinstance(other, LampyObject):
+            other = array(other)
         op = LampyOperator.mul_operator.value
         return LampyObject(children=[self, other], op=op)
 
     # Representation
     def __str__(self):
-        return f"LampyObject(status={self.status.name}, value={repr(self.value)})"
+        # TODO: Refer to arrayprint to see how to pretty-print LampyObject
+        value = repr(self.value)
+        status = self.status.name
+        return f"LampyObject(status={status}, value={value})"
