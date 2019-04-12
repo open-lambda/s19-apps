@@ -94,6 +94,31 @@ class _LampyMulOperator(_LampyOperator):
         m = generator(x, len(x))
         n = generator(y, len(y))
         return m, n
+
+
+    @staticmethod
+    def _shape_op(x: tuple, y: tuple):
+        # TODO: This is absolutely not a good idea, but let's jut keep it that way -- otherwise goto C level and see
+        #  the broadcast machenism.
+        if x == (0,) or y == (0,):
+            return (0, )
+        # Has scalar
+        if _LampyMulOperator._is_scalar(x):
+            return y
+        if _LampyMulOperator._is_scalar(y):
+            return x
+
+        # Both are vector
+        if _LampyMulOperator._is_vector(x) and _LampyMulOperator._is_vector(y):
+            if x == y:
+                return x
+            raise Exception("Shape not match")
+
+        # Matrix Multiplication
+        m, n = _LampyMulOperator._fix_shape(x, y)
+        if m[1] == n[0]:
+            return (m[0], n[1])
+        raise Exception("Shape not match")
         try:
             self.val = np.array(json.loads(data))
             return
