@@ -90,7 +90,7 @@ class _LampyMulOperator(_LampyOperator):
         maxlen = max(len(x), len(y))
         if maxlen == 0:
             return ((0,), (0,)) # Invalid return
-        generator = lambda x, len_x: tuple([x[i] if i < len_x else 1 for i in range(len_x)])
+        generator = lambda x, len_x: tuple([x[i] if i < len_x else 1 for i in range(maxlen)])
         m = generator(x, len(x))
         n = generator(y, len(y))
         return m, n
@@ -223,21 +223,4 @@ class LampyObject:
         return LampyObject(children=[self, other], op=op)
 
     def __str__(self):
-        return f"LampyObject({self.value}, status={self.status.name})"
-
-
-
-if __name__ == '__main__':
-    a = LampyObject([1, 2, 3])
-    print(a)
-
-    b = LampyObject([1, 2, 3])
-    print(a)
-
-    c = a + b
-    print(c.shape)
-    print(c)
-
-    d = a * c
-    print(d.shape)
-    print(d)
+        return f"LampyObject(status={self.status.name}, value={repr(self.value)})"
