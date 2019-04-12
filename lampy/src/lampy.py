@@ -119,6 +119,18 @@ class _LampyMulOperator(_LampyOperator):
         if m[1] == n[0]:
             return (m[0], n[1])
         raise Exception("Shape not match")
+
+    @staticmethod
+    def _op(x: ndarray, y: ndarray):
+        return x * y
+
+    def __init__(self):
+        super(_LampyMulOperator, self).__init__(
+            op=self._op, shape_op=self._shape_op,
+        )
+
+    def __call__(self, *args):
+        return self._op(*args)
         try:
             self.val = np.array(json.loads(data))
             return
