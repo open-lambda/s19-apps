@@ -1,6 +1,10 @@
+import json
+
 import numpy as np
 from enum import Enum
 import logging
+
+import requests
 from numpy import ndarray
 
 class LampyStatus(Enum):
@@ -148,6 +152,7 @@ class LampyObject:
         self._shape = None
         # self._meta = None
 
+    # Object Property
     @property
     def status(self) -> LampyStatus:
         return self._status
@@ -164,7 +169,7 @@ class LampyObject:
                 return True
         return False
 
-    # Invoke operator
+    # Schedule-able Task Handler
     def _operate(self, *args):
         try:
             result = self._op(*args)
@@ -173,8 +178,34 @@ class LampyObject:
         except:
             assert( False, "Operation failed")
 
+    def _resolve_content_from_data_src(self, data):
+        val = None
+        try:
+            val = np.load(data)
+            return val
+        except:
+            print(f"[Debug] Not numpy file.")
+
+        try:
+            self.val = np.array(json.loads(data))
+            return val
+        except:
+            print(f"[Debug] Not json file.")
+
+        raise Exception("Not parseable data")
+
+    def _read_data_src(self):
+        if not self._is_type([LampyStatus.Input_Empty]):
+            return
+        # self._status = LampyStatus.Input_Loading
+        req = requests.get(self._data_src)
+        data = self._resolve_content_from_data_src(req.content)
+        self._val = data
+        # self._status = LampyStatus.Input_Done
+
     @property
     def shape(self):
+        """Resolve shape of the object"""
         if self.is_done():
             return self._val.shape
         if self._shape:
@@ -184,24 +215,29 @@ class LampyObject:
         self._shape = self._op.shape(*shapes)
         return self._shape
 
-    # Retrieve Value
     @property
     def value(self):
+        """Resolve value of the object"""
         if not self.is_done():
             if self._is_type(INPUT_NODE):
+                # TODO: Dispatch remote task for computation
                 # TODO: Input all things from data_src
+                self._read_data_src()
                 pass
             elif self._is_type(OUTPUT_NODE):
                 # Recursively calculate children's value
                 ch_vals = [ch.value for ch in self.children]
+                # TODO: Dispatch this job to the scheduler
                 self._operate(*ch_vals)
+                # TODO: Block and wait for the job
             self._mark_done()
         return self._val
 
+    @property
     def async_value(self):
         return self._val
 
-    # Automaton status change
+    # Automaton status methods
     def is_done(self):
         return self._is_type(DONE_NODE)
 
@@ -213,7 +249,7 @@ class LampyObject:
             self._status = LampyStatus.Output_Done
             return
 
-    # Python Native Operator Capturer
+    # Python Native Operator Capture Function
     def __add__(self, other):
         op = LampyOperator.add_operator.value
         return LampyObject(children=[self, other], op=op)
