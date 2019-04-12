@@ -2,13 +2,16 @@ import src.lampy as np
 # from src.lampy import LampyOperator
 import time
 
+
+
 def testfunc(func):
     def wrapper():
-        print(f"------ Test {func.__name__} start ------")
+        print(f"<-[Test]-- {func.__name__} start")
         st = time.time_ns() / 1000000
         func()
         ed = time.time_ns() / 1000000
-        print(f"------ Test {func.__name__}   end ------ [Exec Time: {ed - st} (ms)]\n")
+        print(f"<-[Test]-- {func.__name__} end\n"
+              f"        Exec Time: {ed - st} (ms)\n")
     return wrapper
 
 
@@ -25,6 +28,10 @@ def test_addition():
     c = a + b
     print(c.shape)
     print(c)
+
+    d = 2 + c
+    print(d.shape)
+    print(d)
 
 
 @testfunc
@@ -56,11 +63,14 @@ def test_remote_fetch():
 
 def test_mult_const():
     a = np.array([1,2,3])
-    # print(a)
-    # b = a * 2
-    # print(b)
+    print(a)
+    b = a * 2
+    print(b)
     c = 2 * a
     print(c)
+
+
+
 
 
 if __name__ == '__main__':
