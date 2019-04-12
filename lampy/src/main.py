@@ -1,7 +1,7 @@
-import src.lampy as np
 # from src.lampy import LampyOperator
 import time
 
+import src.lampy as np
 
 
 def testfunc(func):
@@ -12,13 +12,12 @@ def testfunc(func):
         ed = time.time_ns() / 1000000
         print(f"<-[Test]-- {func.__name__} end\n"
               f"        Exec Time: {ed - st} (ms)\n")
-    return wrapper
 
+    return wrapper
 
 
 @testfunc
 def test_addition():
-
     a = np.array([1, 2, 3])
     print(a)
 
@@ -42,7 +41,7 @@ def test_multiplication():
     b = np.array([1, 2, 3])
     print(a)
 
-    c = np.array( [[1, 2, 3], [1, 2, 3]] )
+    c = np.array([[1, 2, 3], [1, 2, 3]])
 
     d = a * b
     print(d.shape)
@@ -61,16 +60,14 @@ def test_remote_fetch():
     pass
 
 
+@testfunc
 def test_mult_const():
-    a = np.array([1,2,3])
+    a = np.array([1, 2, 3])
     print(a)
     b = a * 2
     print(b)
     c = 2 * a
     print(c)
-
-
-
 
 
 if __name__ == '__main__':

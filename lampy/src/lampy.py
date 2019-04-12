@@ -1,11 +1,10 @@
 import json
+from enum import Enum
 
 import numpy as np
-from enum import Enum
-import logging
-
 import requests
 from numpy import ndarray
+
 
 class LampyStatus(Enum):
     # Empty Node
@@ -29,8 +28,8 @@ class LampyStatus(Enum):
 
 CONST_NODE = [LampyStatus.Const]
 INPUT_NODE = [LampyStatus.Input_Empty, LampyStatus.Input_Loading, LampyStatus.Input_Done]
-OUTPUT_NODE = [LampyStatus.Output_Undefined,LampyStatus.Output_Empty,LampyStatus.Output_Loading,
-               LampyStatus.Output_Running,LampyStatus.Output_Done]
+OUTPUT_NODE = [LampyStatus.Output_Undefined, LampyStatus.Output_Empty, LampyStatus.Output_Loading,
+               LampyStatus.Output_Running, LampyStatus.Output_Done]
 DONE_NODE = [LampyStatus.Output_Done, LampyStatus.Input_Done, LampyStatus.Const]
 
 
@@ -91,7 +90,7 @@ class _LampyAddOperator(_LampyOperator):
 class _LampyMulOperator(_LampyOperator):
     @staticmethod
     def _is_scalar(x: tuple):
-        return x == (1, )
+        return x == (1,)
 
     @staticmethod
     def _is_vector(x: tuple):
@@ -101,19 +100,18 @@ class _LampyMulOperator(_LampyOperator):
     def _fix_shape(x: tuple, y: tuple):
         maxlen = max(len(x), len(y))
         if maxlen == 0:
-            return ((0,), (0,)) # Invalid return
+            return ((0,), (0,))  # Invalid return
         generator = lambda x, len_x: tuple([x[i] if i < len_x else 1 for i in range(maxlen)])
         m = generator(x, len(x))
         n = generator(y, len(y))
         return m, n
-
 
     @staticmethod
     def _shape_op(x: tuple, y: tuple):
         # TODO: This is absolutely not a good idea, but let's jut keep it that way -- otherwise goto C level and see
         #  the broadcast machenism.
         if x == (0,) or y == (0,):
-            return (0, )
+            return (0,)
         # Has scalar
         if _LampyMulOperator._is_scalar(x):
             return y
@@ -184,7 +182,7 @@ class LampyObject:
             self._val = result
             return result
         except:
-            assert( False, "Operation failed")
+            assert (False, "Operation failed")
 
     def _get_url_data_content(self, url):
         pass
@@ -225,7 +223,7 @@ class LampyObject:
         if self._shape:
             return self._shape
         # Children Shape retrieve
-        shapes = [ ch.shape for ch in self.children ]
+        shapes = [ch.shape for ch in self.children]
         self._shape = self._op.shape(*shapes)
         return self._shape
 
