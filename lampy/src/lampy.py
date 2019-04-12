@@ -137,6 +137,32 @@ class LampyOperator(Enum):
     add_operator = _LampyAddOperator()
     mul_operator = _LampyMulOperator()
 
+
+class LampyObject:
+    def __init__(self, val=None, children=None, op=None):
+        self._chs = children if children is not None else []
+        self._op: _LampyOperator = op
+        self._val, self._data_src, self._status = _array(val, children)
+
+        # Cache value -- could be dirty
+        self._shape = None
+        # self._meta = None
+
+    @property
+    def status(self) -> LampyStatus:
+        return self._status
+
+    @property
+    def children(self):
+        return self._chs
+
+    def is_type(self, *args):
+        for nodeset in args:
+            if not isinstance(nodeset, list):
+                nodeset = [nodeset]
+            if self.status in nodeset:
+                return True
+        return False
         try:
             self.val = np.array(json.loads(data))
             return
