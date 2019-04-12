@@ -2,7 +2,9 @@
 
 Numpy for Open-Lambda.
 
-[TOC]
+Demo
+https://docs.google.com/presentation/d/1Szf8G7mzC7mwRbOxSM-Sc_jxLqiJ0RuVDHO5ZffbJEA/edit?usp=sharing
+
 
 ## Possible Approach
 

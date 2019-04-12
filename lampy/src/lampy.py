@@ -46,6 +46,7 @@ def _array(val=None, children=None, op=None):
     """
     if children is not None:
         return (None, None, LampyStatus.Output_Empty)
+        # return (None, None, LampyStatus.Output_Empty)
     # Empty Node
     if val is None:
         return (np.array([]), None, LampyStatus.Empty)
@@ -143,9 +144,54 @@ class _LampyMulOperator(_LampyOperator):
         return self._op(*args)
 
 
+class _LampyDotOperator(_LampyOperator):
+    @staticmethod
+    def _shape_op(x: tuple, y: tuple):
+        return tuple([1]) # Guarantee a tuple return
+
+    @staticmethod
+    def _op(x: ndarray, y: ndarray):
+        return x.dot(y)
+
+    def __init__(self):
+        super(_LampyDotOperator, self).__init__(
+            op=self._op, shape_op=self._shape_op,
+        )
+
+    def __call__(self, *args):
+        return self._op(*args)
+
+
+class _LampyConvOperator(_LampyOperator):
+    @staticmethod
+    def _shape_op(x: tuple, y: tuple):
+        # TODO: This is wrong. Implement this.
+        return max(x, y)
+
+    @staticmethod
+    def _op(x: ndarray, y: ndarray, mode='same'):
+        return np.convolve(x, y, mode=mode)
+
+    def __init__(self):
+        super(_LampyConvOperator, self).__init__(
+            op=self._op, shape_op=self._shape_op,
+        )
+
+    def __call__(self, *args, **kwargs):
+        return self._op(*args, **kwargs)
+
+
 class LampyOperator(Enum):
     add_operator = _LampyAddOperator()
     mul_operator = _LampyMulOperator()
+    dot_operator = _LampyDotOperator()
+    conv_operator = _LampyConvOperator()
+
+
+def convolve(x: 'LampyObject', y: 'LampyObject', mode='same'):
+    # TODO: mode='full' is the default.
+    return LampyObject(None, [x, y], op=LampyOperator.conv_operator)
+
 
 
 class LampyObject:
@@ -220,8 +266,8 @@ class LampyObject:
         """Resolve shape of the object"""
         if self.is_done():
             return self._val.shape
-        if self._shape:
-            return self._shape
+        # if self._shape:
+        #     return self._shape
         # Children Shape retrieve
         shapes = [ch.shape for ch in self.children]
         self._shape = self._op.shape(*shapes)
@@ -278,6 +324,20 @@ class LampyObject:
             other = array(other)
         op = LampyOperator.mul_operator.value
         return LampyObject(children=[self, other], op=op)
+
+    def dot(self, other):
+        if not isinstance(other, LampyObject):
+            other = array(other)
+        op = LampyOperator.dot_operator.value
+        return LampyObject(children=[self, other], op=op)
+
+    def conv(self, other, mode='same'):
+        if not isinstance(other, LampyObject):
+            other = array(other)
+        op = LampyOperator.conv_operator.value
+        # TODO: op = _LampyConvOperator(mode=mode) # Customize Operator
+        return LampyObject(children=[self, other], op=op)
+
 
     # Representation
     def __str__(self):
