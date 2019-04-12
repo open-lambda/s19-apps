@@ -225,10 +225,19 @@ class LampyObject:
     def __str__(self):
         return f"LampyObject({self.value}, status={self.status.name})"
 
-        return self.val
 
-    def __add__(self, obj):
-        return LamObject(val=None, children=[self, obj])
 
-    def __str__(self):
-        return self.val.__str__()
+if __name__ == '__main__':
+    a = LampyObject([1, 2, 3])
+    print(a)
+
+    b = LampyObject([1, 2, 3])
+    print(a)
+
+    c = a + b
+    print(c.shape)
+    print(c)
+
+    d = a * c
+    print(d.shape)
+    print(d)
