@@ -196,10 +196,21 @@ class LampyObject:
                 self.operate(*ch_vals)
             self._mark_done()
         return self._val
+
+    # See _val in any case
+    def async_value(self):
+        return self._val
+
+    # Return current outcome
+    def is_done(self):
+        return self.is_type(DONE_NODE)
+
+    def _mark_done(self):
+        if self.is_type(INPUT_NODE):
+            self._status = LampyStatus.Input_Done
             return
-        if not len(self.children):
-            if self.status == LamStatus.DATA_SRC:
-                self.fetch()  # Fetch data here!
+        if self.is_type(OUTPUT_NODE):
+            self._status = LampyStatus.Output_Done
             return
 
     def run(self):
