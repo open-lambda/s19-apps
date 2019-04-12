@@ -131,6 +131,12 @@ class _LampyMulOperator(_LampyOperator):
 
     def __call__(self, *args):
         return self._op(*args)
+
+
+class LampyOperator(Enum):
+    add_operator = _LampyAddOperator()
+    mul_operator = _LampyMulOperator()
+
         try:
             self.val = np.array(json.loads(data))
             return
