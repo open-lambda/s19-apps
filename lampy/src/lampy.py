@@ -57,6 +57,23 @@ class _LampyOperator:
     def shape(self, *args):
         return self._shape_op(*args)
 
+
+class _LampyAddOperator(_LampyOperator):
+    @staticmethod
+    def _shape_op(x: tuple, y: tuple):
+        return max(x, y)
+
+    @staticmethod
+    def _op(x: ndarray, y: ndarray):
+        return x + y
+
+    def __init__(self):
+        super(_LampyAddOperator, self).__init__(
+            op=self._op, shape_op=self._shape_op,
+        )
+
+    def __call__(self, *args):
+        return self._op(*args)
         try:
             self.val = np.array(json.loads(data))
             return
