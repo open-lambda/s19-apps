@@ -74,6 +74,26 @@ class _LampyAddOperator(_LampyOperator):
 
     def __call__(self, *args):
         return self._op(*args)
+
+
+class _LampyMulOperator(_LampyOperator):
+    @staticmethod
+    def _is_scalar(x: tuple):
+        return x == (1, )
+
+    @staticmethod
+    def _is_vector(x: tuple):
+        return len(x) == 1
+
+    @staticmethod
+    def _fix_shape(x: tuple, y: tuple):
+        maxlen = max(len(x), len(y))
+        if maxlen == 0:
+            return ((0,), (0,)) # Invalid return
+        generator = lambda x, len_x: tuple([x[i] if i < len_x else 1 for i in range(len_x)])
+        m = generator(x, len(x))
+        n = generator(y, len(y))
+        return m, n
         try:
             self.val = np.array(json.loads(data))
             return
