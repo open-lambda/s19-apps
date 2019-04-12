@@ -28,6 +28,23 @@ INPUT_NODE = [LampyStatus.Input_Empty, LampyStatus.Input_Loading, LampyStatus.In
 OUTPUT_NODE = [LampyStatus.Output_Undefined,LampyStatus.Output_Empty,LampyStatus.Output_Loading,
                LampyStatus.Output_Running,LampyStatus.Output_Done]
 DONE_NODE = [LampyStatus.Output_Done, LampyStatus.Input_Done, LampyStatus.Const]
+
+def _array(val=None, children=None, op=None):
+    """Internal method to create a new array.
+    Return val: a triple : (val, data_src, status)
+    """
+    if children is not None:
+        return (None, None, LampyStatus.Output_Empty)
+    # Empty Node
+    if val is None:
+        return (np.array([]), None, LampyStatus.Empty)
+    # Const Node
+    if isinstance(val, (list, np.ndarray)):
+        return (np.array(val), None, LampyStatus.Const)
+    # Data input node
+    if isinstance(val, (str)):
+        return (None, val, LampyStatus.Input_Empty)
+
         try:
             self.val = np.array(json.loads(data))
             return
