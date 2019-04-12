@@ -1,8 +1,3 @@
-import json
-import shutil
-from enum import Enum
-from functools import reduce
-
 import numpy as np
 import requests
 
