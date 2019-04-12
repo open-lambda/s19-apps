@@ -1,9 +1,8 @@
 import numpy as np
-        try:
-            self.val = np.load(data)
-            return
-        except:
-            print(f"[Debug] {url} not numpy object file. Try json parsing")
+from enum import Enum
+import logging
+from numpy import ndarray
+
 
         try:
             self.val = np.array(json.loads(data))
