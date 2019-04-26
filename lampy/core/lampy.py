@@ -196,3 +196,13 @@ def Server(lampie=None):
     global coordinator
     coordinator = o
     return o
+
+
+coordinator = Client()
+
+counter = 0
+
+dumps = cloudpickle.dumps
+loads = cloudpickle.loads
+json_dumps = jsonpickle.dumps
+json_loads = jsonpickle.loads
