@@ -82,3 +82,7 @@ class Pie:
     def __rdiv__(self, other):
         return Pie.__binaryop__(other, self, "div")
 
+
+class Lampie:
+    def __init__(self):
+        self.var = {}  # name: str, Pie
