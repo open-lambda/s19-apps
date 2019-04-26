@@ -3,6 +3,7 @@ from contextlib import contextmanager
 import cloudpickle
 import jsonpickle
 import numpy as np
+import requests
 
 
 @contextmanager
@@ -107,6 +108,7 @@ class Lampie:
 
 
 def calc_pie(cord, pie):
+    """Actually calculate the pie."""
     if pie.type == "const":
         return
     if pie.type == "input":  # input the value from file
@@ -124,14 +126,16 @@ def calc_pie(cord, pie):
 
 
 def load_data(path):
-    
+    """Load data from the path. """
+    import requests
     pass
 
 
 class LampieClient:
-    def __init__(self, lampie=None, delay=False):
+    def __init__(self, lampie=None, delay=False, url=None):
         self.lampie = lampie or Lampie()
         self.delay = delay
+        self.url = url
 
     def dumps(self):
         obj = {"lampie": self.lampie.dumps()}
@@ -141,6 +145,12 @@ class LampieClient:
         obj = jsonpickle.loads(obj)
         self.lampie.loads(obj['lampie'])
 
+    def request(self):
+        """Raw request of the lampie info"""
+        data = self.dumps()
+        response = requests.post(self.url, data=data)
+        return response
+
     def set_pie(self, name, pie):
         self.lampie.set_pie(name, pie)
 
@@ -148,16 +158,33 @@ class LampieClient:
         return self.lampie.get_pie(name)
 
     def calc_pie(self, pie):
-        calc_pie(self, pie)
+        if isinstance(pie, str):
+            pie = self.get_pie(pie)
+        if pie.type == "const":
+            return
+        assert isinstance(pie, Pie)
+        if not self.delay and self.url:
+            response = self.request()
+            print response.content
+            self.loads(response.content)
+        elif self.delay and not self.url:
+            pass # Can only exec locally but delayed
+        else:
+            calc_pie(self, pie)
+
+        return
 
     def load_data(self):
+        # TODO:
         # Upload data
         pass
 
 
 class LampieServer:
-    def __init__(self, lampie=None, delay=False):
+    def __init__(self, lampie=None, delay=False, event=None):
         self.lampie = lampie or Lampie()
+        if event:
+            self.lampie.loads(event['lampie'])
         self.delay = delay
 
     def dumps(self):
@@ -178,21 +205,22 @@ class LampieServer:
         calc_pie(self, pie)
 
     def load_data(self):
+        # TODO:
         # 1. Local Schema:
         # 2. HTTP Request: http(s):// ...
         # 3. Object Storage: psql:????
         pass
 
 
-def Client(lampie=None):
-    o = LampieClient(lampie)
+def Client(lampie=None, delay=False):
+    o = LampieClient(lampie, delay=delay)
     global coordinator
     coordinator = o
     return o
 
 
-def Server(lampie=None):
-    o = LampieServer(lampie)
+def Server(lampie=None, event=None):
+    o = LampieServer(lampie=lampie, event=event)
     global coordinator
     coordinator = o
     return o

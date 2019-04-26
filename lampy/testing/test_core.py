@@ -1,7 +1,7 @@
 import json
 import pickle
 
-from core import lampy as np
+from core import lampy as np, Client, delay
 
 # # Client/Server unsingleton identity
 # client = np.Client()
@@ -76,6 +76,17 @@ from core import lampy as np
 # c = a / b
 # print c
 
+# Client Functionality
+client = Client(delay=False)
+a = np.array([3.])
+print "a", a
+b = np.array([1.5])
+print "b", b
+with delay():
+    c = a + b
+    print c
+print c
+
 # # Delay Definition
 # client = np.Client()
 # print client.delay
@@ -88,22 +99,23 @@ from core import lampy as np
 #     print d
 # print d
 
-# File operation
-import h5py
-import numpy
-with h5py.File("tmp.hdf5", "w") as f:
-    a = numpy.random.random(size=(100, 100))
-    b = numpy.random.random(size=(100, 100))
-    f.create_dataset('a', data=a)
-    f.create_dataset('b', data=b)
+# # File operation
+# import h5py
+# import numpy
+# with h5py.File("tmp.hdf5", "w") as f:
+#     a = numpy.random.random(size=(100, 100))
+#     b = numpy.random.random(size=(100, 100))
+#     f.create_dataset('a', data=a)
+#     f.create_dataset('b', data=b)
+#
+# with h5py.File("tmp.hdf5", "r") as f:
+#     a = f.get("a")
+#     b = f.get("b")
+#     na = np.array(numpy.array(a))
+#     nb = np.array(numpy.array(b))
+#     with np.delay():
+#         nc = na + nb
+#         print nc
+#     print nc
 
-with h5py.File("tmp.hdf5", "r") as f:
-    a = f.get("a")
-    b = f.get("b")
-    na = np.array(numpy.array(a))
-    nb = np.array(numpy.array(b))
-    with np.delay():
-        nc = na + nb
-        print nc
-    print nc
 # Client Functionality
