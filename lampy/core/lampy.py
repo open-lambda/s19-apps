@@ -127,3 +127,30 @@ def load_data(path):
     
     pass
 
+
+class LampieClient:
+    def __init__(self, lampie=None, delay=False):
+        self.lampie = lampie or Lampie()
+        self.delay = delay
+
+    def dumps(self):
+        obj = {"lampie": self.lampie.dumps()}
+        return json_dumps(obj)
+
+    def loads(self, obj):
+        obj = jsonpickle.loads(obj)
+        self.lampie.loads(obj['lampie'])
+
+    def set_pie(self, name, pie):
+        self.lampie.set_pie(name, pie)
+
+    def get_pie(self, name):
+        return self.lampie.get_pie(name)
+
+    def calc_pie(self, pie):
+        calc_pie(self, pie)
+
+    def load_data(self):
+        # Upload data
+        pass
+
