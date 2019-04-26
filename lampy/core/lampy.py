@@ -183,3 +183,16 @@ class LampieServer:
         # 3. Object Storage: psql:????
         pass
 
+
+def Client(lampie=None):
+    o = LampieClient(lampie)
+    global coordinator
+    coordinator = o
+    return o
+
+
+def Server(lampie=None):
+    o = LampieServer(lampie)
+    global coordinator
+    coordinator = o
+    return o
