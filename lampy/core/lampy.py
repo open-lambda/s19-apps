@@ -104,3 +104,22 @@ class Lampie:
 
     def __repr__(self):
         return self.__str__()
+
+
+def calc_pie(cord, pie):
+    if pie.type == "const":
+        return
+    if pie.type == "input":  # input the value from file
+        value = cord.load_data()
+        pie.value = value
+        return
+    # if pie.type == "output":
+    if not cord.delay:
+        pies = [cord.get_pie(i) for i in pie.children_name]
+        for p in pies:
+            cord.calc_pie(p)
+        func = get_func(pie.func)
+        value = func(*[p.value for p in pies])
+        pie.value = value
+
+
