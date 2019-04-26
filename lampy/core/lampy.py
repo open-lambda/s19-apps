@@ -26,6 +26,16 @@ class Pie:
         self.func = func or "add"
         coordinator.set_pie(name, self)
 
+    @property
+    def type(self):
+        if isinstance(self.value, str):
+            return "input"
+        if self.value is not None:
+            return "const"
+        if isinstance(self.children_name, list) and len(self.children_name) > 0 and self.func:
+            return "output"
+        return "unknown"
+
     def get_value(self):
         if self.type != "const":
             global coordinator
