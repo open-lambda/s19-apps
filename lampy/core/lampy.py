@@ -86,3 +86,21 @@ class Pie:
 class Lampie:
     def __init__(self):
         self.var = {}  # name: str, Pie
+
+    def set_pie(self, name, pie):
+        self.var[name] = pie
+
+    def get_pie(self, name):
+        return self.var[name]
+
+    def dumps(self):
+        return dumps(self.var)
+
+    def loads(self, obj):
+        self.var = loads(obj)
+
+    def __str__(self):
+        return str(self.var)
+
+    def __repr__(self):
+        return self.__str__()
