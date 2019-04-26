@@ -123,3 +123,7 @@ def calc_pie(cord, pie):
         pie.value = value
 
 
+def load_data(path):
+    
+    pass
+
