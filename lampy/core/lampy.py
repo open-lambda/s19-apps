@@ -206,3 +206,33 @@ dumps = cloudpickle.dumps
 loads = cloudpickle.loads
 json_dumps = jsonpickle.dumps
 json_loads = jsonpickle.loads
+
+
+def array(v, ch=None, func=None):
+    if isinstance(v, Pie):
+        return v
+
+    def new_name():
+        global counter
+        counter += 1
+        return str(counter)
+
+    n = new_name()
+    if isinstance(v, list):
+        v = np.array(v)
+    return Pie(n, v, ch, func)
+
+
+func_dict = {
+    "add": np.add,
+    "sub": np.subtract,
+    "mul": np.multiply,
+    "div": np.divide
+}
+
+
+def get_func(foo):
+    """foo: str or lambda"""
+    if isinstance(foo, str) and foo in func_dict:
+        return func_dict[foo]
+    return foo
