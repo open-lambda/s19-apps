@@ -24,7 +24,7 @@ class Pie:
         self.name = name
         self.value = value
         self.children_name = children_name or []
-        self.func = func or "add"
+        self.func = func or ""
         coordinator.set_pie(name, self)
 
     @property
@@ -128,9 +128,13 @@ def calc_pie(cord, pie):
 def load_data(path):
     """Load data from the path. """
     import requests
+
+
     pass
 
-
+#####################################
+##    -    Client & Server    -    ##
+#####################################
 class LampieClient:
     def __init__(self, lampie=None, delay=False, url=None):
         self.lampie = lampie or Lampie()
@@ -212,6 +216,7 @@ class LampieServer:
         pass
 
 
+
 def Client(lampie=None, delay=False):
     o = LampieClient(lampie, delay=delay)
     global coordinator
@@ -237,6 +242,7 @@ json_loads = jsonpickle.loads
 
 
 def array(v, ch=None, func=None):
+    """Init a new Pie object that wraps the array"""
     if isinstance(v, Pie):
         return v
 

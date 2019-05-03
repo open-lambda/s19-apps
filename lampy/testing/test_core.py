@@ -76,16 +76,16 @@ from core import lampy as np, Client, delay
 # c = a / b
 # print c
 
-# Client Functionality
-client = Client(delay=False)
-a = np.array([3.])
-print "a", a
-b = np.array([1.5])
-print "b", b
-with delay():
-    c = a + b
-    print c
-print c
+# # Client Functionality
+# client = Client(delay=False)
+# a = np.array([3.])
+# print "a", a
+# b = np.array([1.5])
+# print "b", b
+# with delay():
+#     c = a + b
+#     print c
+# print c
 
 # # Delay Definition
 # client = np.Client()
@@ -118,4 +118,9 @@ print c
 #         print nc
 #     print nc
 
-# Client Functionality
+# File Upload
+with np.delay():
+    a = np.array("tmp.hdf5")
+    b = np.array("tmp.hdf5")
+    c = a + b
+print c
